@@ -45,10 +45,11 @@
           </a>
         </form>
       </div>
+      <!-- Sign up  -->
       <div :class="this.isSignup ? '_fadehi' : 'hide'">
           <h2>Sign up</h2>
           <p class="mt-3">Create a new wallet account.</p>
-            <form action="" id="signup-form" class="my-4" @submit.prevent="login">
+            <form action="" id="signup-form" class="my-4" @submit.prevent="signup">
               <div class="my-2">
                   <input type="text" :placeholder="$t('LOGIN.EMAIL')" name="email" id="login-form-email" @input="resetError()" v-bind:class="this.validEmail === true ? 'border rounded px-3' : 'border rounded px-3 border-danger'" autocomplete="off" v-model="email">
                   <span style="margin-left: -35px; margin-right: 15px; z-index: 999; position: absulute ">
@@ -184,9 +185,58 @@ export default {
         console.error(e)
       }
     },
+    async signup(){
+        if(this.emailValidation(this.email) && this.password.length > 0){
+        try {
+         let res = await this.$axios.post('http://127.0.0.1:8080/api/auth/signup', {
+          email: this.email,
+          password: this.password,
+          id: this.email,
+          token: "string",
+          ethAccount: "string",
+          did: "string"
+        });
+        console.log(res);
+          this.$router.push("/")
+          //this.loginLoading=false
+        } catch (e) {
+          this.loginLoading=false
+          console.log(e.response.data)
+          this.error = true
+          this.errorMessage = e.response.data
+        }
+      }
+      // check if both wrong: email && pw not empty
+      else if(this.emailValidation(this.email) === false && this.password.length === 0){
+        this.validEmail = false
+        this.validPassword = false
+        this.error = true
+        this.errorMessage = "Please verify your credentials!"
+        this.loginLoading=false
+      }
+      // check if just email is not validate
+      else if(this.emailValidation(this.email) === false){
+        this.validEmail = false;
+        this.error = true;
+        this.errorMessage = "Please verify your email!"
+        this.loginLoading=false
+      }
+      // check just the pw is empty
+      else if(this.password.length === 0){
+        this.validPassword = false
+        this.error = true
+        this.errorMessage = "Please fill your password!"
+        this.loginLoading=false
+      }
+    },
+
+
     async login (){
       this.loginLoading=true
       this.resetError()
+      console.log("Sign up");
+      console.log(this.password);
+      console.log(this.email);
       // check if  email && pw not empty === login
       if(this.emailValidation(this.email) && this.password.length > 0){
         try {
