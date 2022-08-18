@@ -20,9 +20,13 @@
                 </div>
             </NuxtLink>
         </div>
-        <NuxtLink to="/AddCredential" class="btn btn-primary py-2" style="width: 70%;">
-            <i class="bi bi-plus-lg me-2"></i>Request Credential
-        </NuxtLink>
+        <i class="bi  me-2"></i>
+       <a href="#copy" class="btn btn-primary col-8 mb-3" @click="requestVerifiableID"><i class="bi bi-files me-3"></i>Request VerifiableID</a>
+
+
+        <!-- <NuxtLink to="/ValidatedIDCredentialOnly" class="btn btn-primary py-2" style="width: 70%;">
+            
+        </NuxtLink> -->
     </div>
 </template>
 
@@ -112,11 +116,48 @@ export default {
       return this.credentials.filter(credential => {
         return JSON.stringify(credential).toLowerCase().includes(this.search.toLowerCase())
       })
+    },
+    currentDid () {
+        console.log(this.$store.state.wallet.currentDid)
+        return this.$store.state.wallet.currentDid
     }
   },
   methods: {
     getIssuerName(credential){
       return credential.issuer.name ? credential.issuer.name : credential.issuer
+    },
+    async requestVerifiableID(){
+      // get the issuer
+      console.log("issuers");
+      const issuers = await this.$axios.$get("/api/wallet/siopv2/issuer/list");
+     console.log("issuers "+ JSON.stringify(issuers[2]));
+       
+     this.selectedIssuer = issuers[2]["id"]
+
+     this.selectedIssuerMeta = await this.$axios.$get(
+        "/api/wallet/siopv2/issuer/metadata?issuerId=" + issuers[2]["id"]
+      );
+
+      console.log("selectedIssuersMeta " + JSON.stringify(this.selectedIssuerMeta));
+      console.log("this schema " + JSON.stringify(this.selectedIssuerMeta["credential_manifests"][0]["output_descriptors"][12]["schema"]));
+      this.selectedCredentialSchema = this.selectedIssuerMeta["credential_manifests"][0]["output_descriptors"][12]["schema"];
+      
+      const location = await this.$axios.$post('/api/wallet/siopv2/initIssuance', {
+        did: this.currentDid,
+        issuerId: this.selectedIssuer,
+        schemaIds: [ this.selectedCredentialSchema ],
+        walletRedirectUri: '/Credentials'
+      })
+      console.log("init issuance location " + JSON.stringify(location));
+      console.log({
+        did: this.currentDid,
+        issuerId: this.selectedIssuer,
+        schemaIds: this.selectedCredentialSchema,
+        walletRedirectUri: '/Credentials'
+      });
+      window.location = location
+      // get the verifiable id credential
+      // redirect to issuer portal
     }
   },
   async asyncData ({ $axios }) {

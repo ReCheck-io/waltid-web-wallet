@@ -84,6 +84,12 @@ export default {
         walletRedirectUri: '/Credentials'
       })
       console.log("init issuance location " + JSON.stringify(location));
+      console.log({
+        did: this.currentDid,
+        issuerId: this.selectedIssuer,
+        schemaIds: [ this.selectedCredentialSchema ],
+        walletRedirectUri: '/Credentials'
+      });
       window.location = location
     }
   },
