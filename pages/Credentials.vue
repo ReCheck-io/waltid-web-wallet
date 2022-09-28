@@ -131,7 +131,8 @@ export default {
       console.log("issuers");
       const issuers = await this.$axios.$get("/api/wallet/siopv2/issuer/list");
      console.log("issuers "+ JSON.stringify(issuers[2]));
-       
+    
+     // the issuer is hardcoded as ReCheck
      this.selectedIssuer = issuers[2]["id"]
 
      this.selectedIssuerMeta = await this.$axios.$get(
@@ -140,6 +141,7 @@ export default {
 
       console.log("selectedIssuersMeta " + JSON.stringify(this.selectedIssuerMeta));
       console.log("this schema " + JSON.stringify(this.selectedIssuerMeta["credential_manifests"][0]["output_descriptors"][12]["schema"]));
+      // The credential is hardcoded for verifiableID
       this.selectedCredentialSchema = this.selectedIssuerMeta["credential_manifests"][0]["output_descriptors"][12]["schema"];
       
       const location = await this.$axios.$post('/api/wallet/siopv2/initIssuance', {
@@ -156,8 +158,6 @@ export default {
         walletRedirectUri: '/Credentials'
       });
       window.location = location
-      // get the verifiable id credential
-      // redirect to issuer portal
     }
   },
   async asyncData ({ $axios }) {

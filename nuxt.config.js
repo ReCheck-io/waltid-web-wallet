@@ -84,7 +84,7 @@ export default {
     },
     redirect: {
       login: '/login',
-      logout: '/login',
+      logout: 'login',
       home: '/'
     },
     cookie: false
