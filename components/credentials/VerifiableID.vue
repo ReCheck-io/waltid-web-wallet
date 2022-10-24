@@ -1,5 +1,6 @@
 <template>
   <div class="p-4">
+    <p>Ei tva</p>
     <div class="col-12 py-3">
                             <span>
                                 <h5>{{$t('CREDENTIAL.TITLE')}}</h5>
