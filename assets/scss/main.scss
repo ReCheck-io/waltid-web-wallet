@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply w-full h-screen bg-light font-sans;
+  }
+}
+
+@layer utilities {
+  .btn-hover {
+    @apply flex items-center hover:bg-gray-100 rounded-[9px] px-3 py-2 transition-all ease-in;
+  }
+}
+
+@layer components {
+  .field {
+    @apply
+    p-3
+    block
+    w-full
+    border
+    text-base
+    shadow-sm
+    rounded-[9px]
+    outline-primary
+    text-gray-dark
+    border-gray-light
+    disabled:bg-gray-50
+    disabled:text-gray-500
+    transition-all
+    duration-150
+    ease-in-out;
+
+    ::placeholder {
+      @apply text-base font-normal text-gray-base;
+    }
+  }
+
+  .btn {
+    @apply
+    w-auto
+    inline-flex
+    items-center
+    justify-center
+    px-5
+    py-2
+    border
+    leading-[19px]
+    border-transparent
+    rounded-[9px]
+    text-base
+    font-medium
+    text-white
+    focus:outline-none
+    disabled:opacity-70
+    disabled:cursor-not-allowed
+    transition-all
+    duration-150
+    ease-in;
+  }
+}
+
+
+.icon {
+  @apply inline-block fill-current text-inherit leading-none flex-shrink-0;
+  max-width: initial;
+  height: 1em;
+  width: 1em;
+}
+

@@ -1,16 +1,16 @@
 <template>
-<div></div>
+  <div></div>
 </template>
 
 <script>
-import {config} from '/config.js'
+import { config } from '@/config.js'
 
 export default {
   name: 'Home',
   middleware: [
-    function ({redirect}) {
+    function ({ redirect }) {
       redirect(config.home)
-    }
-  ]
-};
+    },
+  ],
+}
 </script>

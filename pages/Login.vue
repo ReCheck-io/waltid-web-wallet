@@ -1,501 +1,184 @@
 <template>
-  <div>
-    <div :class="this.isSignin ? '_fade' : 'hide'">
-      <img :src="this.logo.path" width="50px" :alt="this.logo.alt" />
+  <div class="w-full min-h-screen flex relative">
+    <div
+      class="left-side py-8 px-10 w-full max-w-full lg:max-w-[52%] bg-white flex flex-col justify-between">
+      <div class="mt-36 mb-20 md:px-8 xl:px-28 flex flex-col gap-6">
+        <div class="mb-8">
+          <h1 class="mb-3 text-[40px] font-medium text-dark leading-[48px]">
+            Welcome Back
+          </h1>
+          <p class="text-base font-medium text-gray-base leading-[19px]">
+            Enter your credentials to access your account.
+          </p>
+        </div>
 
-      <p class="mt-3">{{ $t("LOGIN.MSG") }}</p>
-      <div></div>
-      <form action="" id="login-form" class="my-4" @submit.prevent="login">
-        <ErrorMessage :message-content="errorMessage" :is-active="error" />
-        <div class="my-2 _animation-fade">
-          <input
-            type="text"
-            :placeholder="$t('LOGIN.EMAIL')"
+        <BaseButton variant="clear" @click="web3modal">
+          {{ $t('LOGIN.LOG_IN_WITH_WALLET') }}
+        </BaseButton>
+
+        <div
+          class="my-6 h-3 border-b-[1px] border-gray-light text-base text-center">
+          <span class="bg-white font-medium text-gray-base px-3">or</span>
+        </div>
+
+        <form @submit="login" class="flex flex-col gap-6">
+          <BaseInput
             name="email"
-            id="login-form-email"
-            @input="resetError()"
-            v-bind:class="
-              this.validEmail === true
-                ? 'border rounded px-3'
-                : 'border rounded px-3 border-danger'
-            "
-            autocomplete="off"
-            v-model="email"
-          />
-          <span
-            style="
-              margin-left: -35px;
-              margin-right: 15px;
-              z-index: 999;
-              position: absulute;
-            "
-          >
-            <i class="bi bi-people"></i>
-          </span>
-        </div>
-        <div class="my-2 _animation-fade">
-          <input
-            type="password"
-            :placeholder="$t('LOGIN.PASSWORD')"
-            name="password"
-            id="login-form-password"
-            @input="resetError()"
-            :data="this.password"
-            :class="
-              this.validPassword === true
-                ? 'border rounded ps-3'
-                : 'border rounded  ps-3 border-danger'
-            "
-            autocomplete="off"
-            v-model="password"
-          />
-          <span
-            style="
-              margin-left: -35px;
-              margin-right: 15px;
-              z-index: 999;
-              position: absulute;
-            "
-          >
-            <i class="bi bi-lock"></i>
-          </span>
-        </div>
-        <div class="my-2">
-          <button
-            type="submit"
-            name="submit"
-            class="text-white border-0 rounded _animation-fade"
-          >
-            <span v-if="loginLoading">
-              <img src="dark-loader.gif" width="30px" style="opacity: 0.7" />
-            </span>
-            <span v-else>{{ $t("LOGIN.LOGIN") }}</span>
-          </button>
-        </div>
-        <div>
-          <a href="#metamask" class="_meta-mask btn" @click="web3modal">
-            <span class="d-flex justify-content-center align-items-center">
-              <i class="bi bi-wallet2 mx-2 text-white"></i>
-              <p>Connect wallet</p>
-            </span>
-          </a>
-        </div>
-        <div class="my-3 d-flex mt-4 justify-content-center">
-          <a @click="toSignup" class="px-3 py-0 fw-normal">{{
-            $t("LOGIN.SIGN_UP")
-          }}</a>
-          <a
-            @click="toResetPassword"
-            class="px-3 py-0 border-start border-2 fw-normal"
-            >{{ $t("LOGIN.FORGOT_PASSWORD") }}</a
-          >
-        </div>
-        <a
-          href="#"
-          v-for="locale in availableLocales"
-          :key="locale.code"
-          @click.prevent.stop="$i18n.setLocale(locale.code)"
-        >
-          <img
-            :src="locale.flag"
-            width="20px"
-            height="15px"
-            :alt="locale.iso"
-            class="me-2 border border-white"
-          />
-        </a>
-      </form>
-    </div>
-    <!-- Sign up  -->
-    <div :class="this.isSignup ? '_fadehi' : 'hide'">
-      <h2>Sign up</h2>
-      <p class="mt-3">Create a new wallet account.</p>
-      <form ref="anyName" action="" id="signup-form" class="my-4" @submit.prevent="signup">
-        <div class="my-2">
-          <input
-            type="text"
-            :placeholder="$t('LOGIN.EMAIL')"
-            name="email"
-            id="login-form-email"
-            @input="resetError()"
-            v-bind:class="
-              this.validEmail === true
-                ? 'border rounded px-3'
-                : 'border rounded px-3 border-danger'
-            "
-            autocomplete="off"
-            v-model="email"
-          />
-          <span
-            style="
-              margin-left: -35px;
-              margin-right: 15px;
-              z-index: 999;
-              position: absulute;
-            "
-          >
-            <i class="bi bi-people"></i>
-          </span>
-        </div>
-        <div class="my-2">
-          <input
-            type="password"
-            :placeholder="$t('LOGIN.PASSWORD')"
-            name="password"
-            id="login-form-password"
-            @input="resetError()"
-            :data="this.password"
-            :class="
-              this.validPassword === true
-                ? 'border rounded px-3'
-                : 'border rounded px-3 border-danger'
-            "
-            autocomplete="off"
-            v-model="password"
-          />
-          <span
-            style="
-              margin-left: -35px;
-              margin-right: 15px;
-              z-index: 999;
-              position: absulute;
-            "
-          >
-            <i class="bi bi-lock"></i>
-          </span>
-        </div>
-        <div class="my-2">
-          <input
-            type="password"
-            :placeholder="$t('LOGIN.CONFIRM_PASSWORD')"
-            name="password"
-            id="signup-form-password-confirm"
-            :class="
-              this.confirmedPassword === false
-                ? 'border border-danger rounded px-3'
-                : 'border rounded px-3'
-            "
-            autocomplete="off"
-            v-model="repassword"
-            @input="confirmPassword()"
-          />
-          <span
-            style="
-              margin-left: -35px;
-              margin-right: 15px;
-              z-index: 999;
-              position: absulute;
-            "
-          >
-            <i class="bi bi-lock"></i>
-          </span>
-        </div>
-        <div class="my-2">
-          <button
-            type="submit"
-            name="submit"
-            class="text-white border-0 rounded _animation-fade"
-          >
-            <span v-if="loginLoading">
-              <img src="dark-loader.gif" width="30px" style="opacity: 0.7" />
-            </span>
-            <span v-else>{{ $t("LOGIN.CREATE_ACCOUNT") }}</span>
-          </button>
-        </div>
-        <div class="my-2">
-          <a @click="toSignIn">{{ $t("LOGIN.ALREADY_ACCOUNT_LOGIN") }}</a>
-        </div>
-      </form>
-    </div>
-    <div :class="this.isResetPassword ? '_fadehi' : 'hide'">
-      <h2>Reset password</h2>
-      <p class="mt-3">Reset your account password</p>
-      <form action="" id="signup-form" class="my-4">
-        <div class="my-2">
-          <input
             type="email"
-            placeholder="E-mail"
-            name="email"
-            id="signup-form-email"
-            class="border rounded px-3"
-            autocomplete="off"
-          />
-        </div>
-        <div class="my-2">
-          <button
-            type="submit"
-            name="submit"
-            class="text-white border-0 rounded"
-          >
-            Reset my password
-          </button>
-        </div>
-        <div class="my-2">
-          <a @click="toSignIn">Already know your account? Login</a>
-        </div>
-      </form>
+            autoComplete="off"
+            :label="$t('LOGIN.EMAIL')"
+            placeholder="Enter your email address"
+            v-model="email" />
+          <BaseInput
+            name="password"
+            type="password"
+            :label="$t('LOGIN.PASSWORD')"
+            placeholder="Enter your password"
+            v-model="password" />
+
+          <BaseButton variant="primary" type="submit">
+            {{ $t('LOGIN.LOG_IN') }}
+          </BaseButton>
+
+          <p class="font-medium text-gray-dark">
+            Not a member?
+            <a href="/register" class="text-primary">
+              {{ $t('LOGIN.CREATE_ACCOUNT') }}
+            </a>
+          </p>
+        </form>
+      </div>
+      <footer class="md-h:pb-8 text-center">
+        <p class="text-gray-base">
+          Copyright {{ currenYear }} &copy; EBSI Inc.
+        </p>
+        <a href="/" class="text-gray-dark">Privacy Policy</a>
+      </footer>
+    </div>
+    <div
+      class="right side py-8 px-10 w-full max-w-[48%] bg-light hidden lg:flex relative justify-end">
+      <img
+        alt="Laptop Illustration"
+        src="~assets/images/laptop-mockup.png"
+        class="absolute right-0 bottom-0"
+        width="750px"
+        height="750px" />
     </div>
   </div>
 </template>
 
 <script>
-import ErrorMessage from "@/components/ErrorMessage.vue";
-import { config } from "/config.js";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import BaseButton from '../components/common/BaseButton.vue'
+import BaseInput from '../components/common/BaseInput.vue'
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
       rpc: {
-        4: "https://rinkeby.infura.io/v3/",
+        4: 'https://rinkeby.infura.io/v3/',
       },
       chainId: 4,
     },
   },
-};
+}
 
 export default {
-  name: "Login",
-  components: {
-    ErrorMessage,
+  name: 'LoginPage',
+  layout: 'auth',
+
+  components: { BaseButton, BaseInput },
+
+  head() {
+    return {
+      title: 'Login - EBSI Issuer',
+    }
   },
+
   data() {
     return {
-      copyright: config.copyright,
-      logo: config.logo,
-      email: "",
-      validEmail: true,
-      password: "",
-      repassword: "",
-      confirmedPassword: null,
-      validPassword: true,
-      error: false,
-      errorMessage: "",
-      isSignin: true,
-      isSignup: false,
-      isResetPassword: false,
-      loginLoading: false,
+      email: '',
+      password: '',
+      errorMessage: '',
       eth_account: null,
-    };
+
+      currenYear: new Date().getFullYear(),
+    }
   },
-  computed: {
-    availableLocales() {
-      console.log("locales", this.$i18n.locales);
-      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
-    },
-  },
+
   methods: {
-    //We included all pages in each condition for reset whole routing states for no UX errors
-    toSignIn() {
-      this.isSignup = false;
-      this.isResetPassword = false;
-      this.isSignin = true;
-    },
-    toSignup() {
-      this.isSignin = false;
-      this.isResetPassword = false;
-      this.isSignup = true;
-    },
-    toResetPassword() {
-      this.isSignup = false;
-      this.isSignin = false;
-      this.isResetPassword = true;
-    },
-    // validate email if a domain name typed after @
-    emailValidation(email) {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
-    },
-    async hashWithSalt(message) {
+    async login(event) {
+      event.preventDefault()
+
       try {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(message + this.$config.SALT);
-        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
-        const hashHex = hashArray
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join(""); // convert bytes to hex string
-
-        return hashHex;
+        const loginResponse = await this.$auth.loginWith('local', {
+          data: {
+            id: this.email,
+            password: this.password,
+          },
+        })
+        this.$auth.setUser(loginResponse.data)
+        // this.$router.push('/')
       } catch (e) {
-        console.error(e);
-      }
-    },
-    async signup() {
-      if (this.emailValidation(this.email) && this.password.length > 0) {
-        try {
-          let res = await this.$axios.post(
-            "http://127.0.0.1:8080/api/auth/signup",
-            {
-              email: this.email,
-              password: this.password,
-              id: this.email,
-              token: "string",
-              ethAccount: "string",
-              did: "string",
-            }
-          );
-          this.$refs.anyName.reset();
-          console.log(res);
-          alert("Sign up successful!")
-          this.toSignIn()
-          //this.loginLoading=false
-        } catch (e) {
-          this.loginLoading = false;
-          console.log(e.response.data);
-          this.error = true;
-          this.errorMessage = e.response.data;
-        }
-      }
-      // check if both wrong: email && pw not empty
-      else if (
-        this.emailValidation(this.email) === false &&
-        this.password.length === 0
-      ) {
-        this.validEmail = false;
-        this.validPassword = false;
-        this.error = true;
-        this.errorMessage = "Please verify your credentials!";
-        this.loginLoading = false;
-      }
-      // check if just email is not validate
-      else if (this.emailValidation(this.email) === false) {
-        this.validEmail = false;
-        this.error = true;
-        this.errorMessage = "Please verify your email!";
-        this.loginLoading = false;
-      }
-      // check just the pw is empty
-      else if (this.password.length === 0) {
-        this.validPassword = false;
-        this.error = true;
-        this.errorMessage = "Please fill your password!";
-        this.loginLoading = false;
+        console.log(e.response.data)
+        this.errorMessage = e.response.data
       }
     },
 
-    async login() {
-      this.loginLoading = true;
-      this.resetError();
-      console.log("Sign up");
-      console.log(this.password);
-      console.log(this.email);
-      // check if  email && pw not empty === login
-      if (this.emailValidation(this.email) && this.password.length > 0) {
-        try {
-          const loginResponse = await this.$auth.loginWith("local", {
-            data: {
-              id: this.email,
-              password: this.password,
-            },
-          });
-          this.$auth.setUser(loginResponse.data);
-          this.$router.push("/");
-          //this.loginLoading=false
-        } catch (e) {
-          this.loginLoading = false;
-          console.log(e.response.data);
-          this.error = true;
-          this.errorMessage = e.response.data;
-        }
-      }
-      // check if both wrong: email && pw not empty
-      else if (
-        this.emailValidation(this.email) === false &&
-        this.password.length === 0
-      ) {
-        this.validEmail = false;
-        this.validPassword = false;
-        this.error = true;
-        this.errorMessage = "Please verify your credentials!";
-        this.loginLoading = false;
-      }
-      // check if just email is not validate
-      else if (this.emailValidation(this.email) === false) {
-        this.validEmail = false;
-        this.error = true;
-        this.errorMessage = "Please verify your email!";
-        this.loginLoading = false;
-      }
-      // check just the pw is empty
-      else if (this.password.length === 0) {
-        this.validPassword = false;
-        this.error = true;
-        this.errorMessage = "Please fill your password!";
-        this.loginLoading = false;
-      }
-    },
     async metamask() {
-      const ethereum = window.ethereum;
-      if (typeof ethereum !== "undefined") {
+      const { ethereum } = window
+      if (typeof ethereum !== 'undefined') {
         const accounts = await ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const account = accounts[0];
-        this.eth_account = account;
+          method: 'eth_requestAccounts',
+        })
+        const account = accounts[0]
+        this.eth_account = account
         try {
-          const loginResponse = await this.$auth.loginWith("local", {
+          const loginResponse = await this.$auth.loginWith('local', {
             data: {
               id: `${this.eth_account}`,
             },
-          });
-          this.$auth.setUser(loginResponse.data);
-          this.$router.push("/");
+          })
+          this.$auth.setUser(loginResponse.data)
+          this.$router.push('/')
         } catch (e) {
-          console.log(e.response.data);
-          this.error = true;
-          this.errorMessage = e.response.data.title;
+          console.log(e.response.data)
+          this.errorMessage = e.response.data.title
         }
       } else {
-        this.error = true;
-        this.errorMessage = "Please install MetaMask!";
+        this.errorMessage = 'Please install MetaMask!'
       }
     },
+
     async web3modal() {
       const web3Modal = new Web3Modal({
         cacheProvider: false, // optional
         providerOptions, // required
-      });
-      const provider = await web3Modal.connect();
-      console.log("provider", provider);
+      })
+      const provider = await web3Modal.connect()
+      console.log('provider', provider)
       if (provider.isMetaMask) {
-        this.eth_account = provider.selectedAddress;
+        this.eth_account = provider.selectedAddress
       } else {
-        this.eth_account = provider.accounts[0];
-        provider.disconnect();
+        this.eth_account = provider.accounts[0]
+        provider.disconnect()
       }
 
       try {
-        const loginResponse = await this.$auth.loginWith("local", {
+        const loginResponse = await this.$auth.loginWith('local', {
           data: {
             id: `${this.eth_account}`,
           },
-        });
-        this.$auth.setUser(loginResponse.data);
-        this.$router.push("/");
+        })
+        this.$auth.setUser(loginResponse.data)
+        this.$router.push('/')
       } catch (e) {
-        console.log(e.response.data);
-        this.error = true;
-        this.errorMessage = e.response.data.title;
-      }
-    },
-    // is a use Experience method to reset error state in retyping
-    resetError() {
-      this.validEmail = true;
-      this.validPassword = true;
-      this.error = false;
-    },
-    //confirm the password
-    confirmPassword() {
-      if (this.password.length > 0 && this.repassword.length > 0) {
-        this.password === this.repassword
-          ? (this.confirmedPassword = true)
-          : (this.confirmedPassword = false);
+        console.log(e.response.data)
+        this.errorMessage = e.response.data.title
       }
     },
   },
-};
+}
 </script>

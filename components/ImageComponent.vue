@@ -1,26 +1,25 @@
 <template>
-    <div class="col-12 py-3" v-if="image">
-        <div class="_image" :style="{ backgroundImage: 'url(' + image + ')' }">
-        </div>
-      </div>
+  <div class="col-12 py-3" v-if="image">
+    <div
+      class="_image"
+      :style="{ backgroundImage: 'url(' + image + ')' }"></div>
+  </div>
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment'
 
 export default {
-  name: "ImageComponent",
+  name: 'ImageComponent',
   props: {
-    image: {}
+    image: {},
   },
   data() {
     return {
-      moment: moment
+      moment,
     }
   },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

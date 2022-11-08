@@ -1,94 +1,81 @@
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "walt.id | Adopt Europe's new Digital Identity Ecosystem",
-    htmlAttrs: {
-      lang: 'en'
-    },
+    title: 'EBSI Wallet',
+    htmlAttrs: { lang: 'en' },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'The easiest and fastest way to use Self-Sovereign Identity (SSI) compliant with new EU Identity Standards (EBSI, ESSIF).' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'description', name: 'description', content: '' },
+      { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-    ]
+    link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  "@/assets/css/core.scss",
-  "@/assets/css/core.css",
-  "@/assets/css/animate.min.css",
-  "@/assets/css/animations.css",
-  "@/assets/css/bootstrap-icons.css"
-  ],
+  css: ['~/assets/scss/fonts.scss', '~/assets/scss/main.scss'],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    '@/plugins/bootstrap',
-    '@/plugins/globals.js'
-  ],
+  components: ['~/components', '~/components/credentials'],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: [
-    '~/components',
-    '~/components/credentials'
-  ],
+  plugins: ['@/plugins/globals.js'],
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/pwa'
-  ],
+  module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
-    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/svg-sprite',
+    '@nuxtjs/auth-next',
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    "@nuxtjs/pwa",
-    "@nuxtjs/auth-next",
-    '@nuxtjs/i18n'
+    '@nuxtjs/pwa',
+    '@nuxtjs/i18n',
   ],
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  buildModules: ['@nuxt/postcss8', '@nuxtjs/eslint-module', '@nuxtjs/pwa'],
+
+  svgSprite: {
+    input: '~/assets/svg/',
+    output: '~/assets/svg/gen',
+  },
+
   axios: {
-    proxy: true
+    proxy: true,
   },
 
   proxy: {
-  //  "/api/": "https://wallet.walt-test.cloud",
-   "/v1/nft": "https://nftkit.waltid.org",
-    "/api/": "http://localhost:8080",
+    //  "/api/": "https://wallet.walt-test.cloud",
+    '/v1/nft': 'https://nftkit.waltid.org',
+    '/api/': 'http://localhost:8080',
   },
+
   auth: {
     strategies: {
       local: {
         token: {
-          property: "token",
+          property: 'token',
           global: true,
           required: true,
-          type: "Bearer"
+          type: 'Bearer',
         },
         user: false,
         endpoints: {
-          login: { url: "api/auth/login", method: "post" },
-          user: { url: "api/auth/userInfo", method: "get" },
-          logout: false
-        }
-      }
+          login: { url: 'api/auth/login', method: 'post' },
+          user: { url: 'api/auth/userInfo', method: 'get' },
+          logout: false,
+        },
+      },
     },
     redirect: {
       login: '/login',
-      logout: 'login',
-      home: '/'
+      logout: '/login',
+      register: '/register',
+      home: '/',
     },
-    cookie: false
+    cookie: false,
   },
+
   i18n: {
     /* module options */
     langDir: '~/locales/',
@@ -100,46 +87,53 @@ export default {
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
-      fallbackLocale: 'en'
-    }
+      fallbackLocale: 'en',
+    },
   },
+
   router: {
-    middleware: ["auth", "wallet"]
+    middleware: ['auth', 'wallet'],
   },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     icon: {
-      default: '/favicon.png'
+      default: '/favicon.png',
     },
     meta: {
-      title: "walt.id | Adopt Europe's new Digital Identity Ecosystem",
-      author: 'walt.id',
+      title: 'EBSI Wallet',
+      author: 'ReCheck B.V',
     },
     manifest: {
-      name: "walt.id | Adopt Europe's new Digital Identity Ecosystem",
-      short_name: "walt.id",
       lang: 'en',
+      name: 'EBSI Wallet',
+      short_name: 'ebsi_wallet',
       display: 'standalone',
     },
   },
 
   publicRuntimeConfig: {
-    salt: process.env.SALT
+    salt: process.env.SALT,
   },
-
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     babel: {
       compact: true,
     },
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+      },
+    },
     extend(config, { isClient }) {
       // Extend only webpack config for client-bundle
       if (isClient) {
         config.devtool = 'source-map'
       }
-    }
+    },
   },
 
-  ssr: false
+  ssr: false,
 }

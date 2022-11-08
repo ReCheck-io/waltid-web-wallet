@@ -10,22 +10,20 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment'
 
 export default {
-  name: "LoopLiComponent",
+  name: 'LoopLiComponent',
   props: {
     items: {},
-    title: {}
+    title: {},
   },
   data() {
     return {
-      moment: moment
+      moment,
     }
-  }
+  },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

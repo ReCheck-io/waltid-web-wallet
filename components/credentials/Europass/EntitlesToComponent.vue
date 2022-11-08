@@ -1,25 +1,33 @@
 <template>
-    <span class="col-12 px-3" v-if="entitlesTo">
-        <ItemValueComponent :title="$t('CREDENTIAL.TITLE')" :value="entitlesTo.title"/>
-        <ItemValueComponent :title="$t('CREDENTIAL.DEFINITION')" :value="entitlesTo.definition"/>
-        <ItemValueComponent :title="$t('CREDENTIAL.ISSUED_DATE')" :value="entitlesTo.issuedDate"/>
-        <EntitlesToSpecifiedByComponent :specifiedBy="entitlesTo.specifiedBy" :title="$t('CREDENTIAL.SPECIFIED_BY')"/>
-    </span>
+  <span class="col-12 px-3" v-if="entitlesTo">
+    <ItemValueComponent
+      :title="$t('CREDENTIAL.TITLE')"
+      :value="entitlesTo.title" />
+    <ItemValueComponent
+      :title="$t('CREDENTIAL.DEFINITION')"
+      :value="entitlesTo.definition" />
+    <ItemValueComponent
+      :title="$t('CREDENTIAL.ISSUED_DATE')"
+      :value="entitlesTo.issuedDate" />
+    <EntitlesToSpecifiedByComponent
+      :specifiedBy="entitlesTo.specifiedBy"
+      :title="$t('CREDENTIAL.SPECIFIED_BY')" />
+  </span>
 </template>
 
 <script>
-import moment from "moment";
-import ItemValueComponent from "./ItemValueComponent.vue";
-import EntitlesToSpecifiedByComponent from "./EntitlesToSpecifiedByComponent.vue";
+import moment from 'moment'
+import ItemValueComponent from './ItemValueComponent.vue'
+import EntitlesToSpecifiedByComponent from './EntitlesToSpecifiedByComponent.vue'
 
 export default {
-  name: "EntitlesToComponent",
+  name: 'EntitlesToComponent',
   props: {
-    entitlesTo: {}
+    entitlesTo: {},
   },
   data() {
     return {
-      moment: moment
+      moment,
     }
   },
   components: {
@@ -29,6 +37,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

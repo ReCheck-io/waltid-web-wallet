@@ -25,7 +25,9 @@
         <h5>{{ $t('ACHIEVEMENT.NAME') }}</h5>
         <p>{{ credential.credentialSubject.achievement.name }}</p>
       </span>
-      <span class="col-4" v-if="credential.credentialSubject.achievement.description">
+      <span
+        class="col-4"
+        v-if="credential.credentialSubject.achievement.description">
         <h5>{{ $t('ACHIEVEMENT.DESCRIPTION') }}</h5>
         <p>{{ credential.credentialSubject.achievement.description }}</p>
       </span>
@@ -34,7 +36,9 @@
         <h5>{{ $t('CRITERIA.TYPE') }}</h5>
         <p>{{ credential.credentialSubject.achievement.criteria.type }}</p>
       </span>
-      <span class="col-4" v-if="credential.credentialSubject.achievement.criteria.narrative">
+      <span
+        class="col-4"
+        v-if="credential.credentialSubject.achievement.criteria.narrative">
         <h5>{{ $t('CRITERIA.NARRATIVE') }}</h5>
         <p>{{ credential.credentialSubject.achievement.criteria.narrative }}</p>
       </span>
@@ -43,67 +47,83 @@
     <div class="text-left py-3 border-bottom mb-3 border-secondary">
       <span class="col-4">
         <h5>{{ $t('CREDENTIAL.ISSUER') }}</h5>
-        <p class="text-truncate" style="max-width: 12em">{{ credential.issuer.name ? credential.issuer.name :
-          credential.issuer }}</p>
+        <p class="text-truncate" style="max-width: 12em">
+          {{
+            credential.issuer.name ? credential.issuer.name : credential.issuer
+          }}
+        </p>
       </span>
       <span class="col-4"></span>
       <span class="col-4">
         <h5>{{ $t('ISSUER.TYPE') }}</h5>
-        <p class="text-truncate" style="max-width: 12em">{{ credential.issuer.type }}</p>
+        <p class="text-truncate" style="max-width: 12em">
+          {{ credential.issuer.type }}
+        </p>
       </span>
       <span class="col-4"></span>
       <span class="col-4">
         <h5>{{ $t('ISSUER.ID') }}</h5>
-        <p class="text-truncate" style="max-width: 12em">{{ credential.issuer.id }}</p>
+        <p class="text-truncate" style="max-width: 12em">
+          {{ credential.issuer.id }}
+        </p>
       </span>
       <span class="col-4"></span>
       <span class="col-4" v-if="credential.issuer.url">
         <h5>{{ $t('ISSUER.URL') }}</h5>
-        <p  class="text-truncate"><a :href="credential.issuer.url" target="_blank">{{ credential.issuer.url }}</a></p>
+        <p class="text-truncate">
+          <a :href="credential.issuer.url" target="_blank">{{
+            credential.issuer.url
+          }}</a>
+        </p>
       </span>
       <ImageComponent :image="credential.issuer.url"></ImageComponent>
     </div>
     <!-- credential -->
     <span class="col-4" v-if="credential.id">
-      <h5>{{$t('CREDENTIAL.ID')}}</h5>
+      <h5>{{ $t('CREDENTIAL.ID') }}</h5>
       <p>{{ credential.id }}</p>
     </span>
     <div class="d-flex py-3 border-bottom mb-3 border-secondary">
       <span class="col-4" v-if="credential.issuanceDate">
-        <h5>{{$t('CREDENTIAL.ISSUED_ON')}}</h5>
-        <p>{{moment(credential.issuanceDate).format("MMM Do YYYY")}}</p>
+        <h5>{{ $t('CREDENTIAL.ISSUED_ON') }}</h5>
+        <p>{{ moment(credential.issuanceDate).format('MMM Do YYYY') }}</p>
       </span>
       <span class="col-4">
-        <h5>{{$t('CREDENTIAL.EXPIRE')}}</h5>
-        <p>{{credential.expirationDate ? moment(credential.expirationDate).format("MMM Do YYYY") : "Never"}}</p>
+        <h5>{{ $t('CREDENTIAL.EXPIRE') }}</h5>
+        <p>
+          {{
+            credential.expirationDate
+              ? moment(credential.expirationDate).format('MMM Do YYYY')
+              : 'Never'
+          }}
+        </p>
       </span>
       <span class="col-4" v-if="credential.validFrom">
-        <h5>{{$t('CREDENTIAL.VALID_FROM')}}</h5>
-        <p>{{moment(credential.validFrom).format("MMM Do YYYY")}}</p>
+        <h5>{{ $t('CREDENTIAL.VALID_FROM') }}</h5>
+        <p>{{ moment(credential.validFrom).format('MMM Do YYYY') }}</p>
       </span>
     </div>
   </div>
 </template>
 
 <script>
-import moment from "moment";
-import ImageComponent from "../ImageComponent.vue";
+import moment from 'moment'
+import ImageComponent from '../ImageComponent.vue'
 
 export default {
-  name: "OpenBadgeCredential",
+  name: 'OpenBadgeCredential',
   props: {
-    credential: {}
+    credential: {},
   },
   data() {
     return {
-      moment: moment
+      moment,
     }
   },
   components: {
     ImageComponent,
-  }
+  },
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
