@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex">
+  <div class="w-full h-full inline-flex">
     <aside class="hidden md:block px-4 h-full w-auto md:min-w-[340px]">
       <p class="py-8 uppercase text-gray-dark">Information</p>
 
@@ -50,8 +50,10 @@
       </ol>
     </aside>
 
-    <div class="w-full h-full bg-white flex">
-      <div class="px-8 pt-4 border-r border-gray-light/25">
+    <div
+      class="lg1:pb-8 w-full h-full bg-white flex lg1:flex-col flex-row justify-center">
+      <div
+        class="lg1:flex lg1:items-center lg1:flex-col lg1:justify-center block px-8 pt-4 border-r md:border-gray-light/25">
         <canvas
           :id="'qr-' + credential.id"
           v-show="showQR || !$globals.thumbnail(this.credential)"
@@ -159,6 +161,7 @@ export default {
       element: document.getElementById(`qr-${this.credential.id}`),
       value: JSON.stringify(this.credential),
       size: 300,
+      // level: 'M',
     })
 
     const { credentialSubject, type } = this.credential

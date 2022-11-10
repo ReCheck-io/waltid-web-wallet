@@ -29,6 +29,7 @@ module.exports = {
         backdrop: 'visibility, opacity, transform',
       },
       screens: {
+        lg1: { raw: '(max-width: 1170px)' },
         'md-h': { raw: '(max-height: 970px)' },
       },
     },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="min-h-screen">
     <section
       class="bg-white px-6 py-3 flex items-center justify-between border-b-[1px] border-gray-light/25">
       <button @click="$router.push('/')" class="text-xl font-medium text-dark">
@@ -16,7 +16,7 @@
       </div>
     </section>
 
-    <section class="h-[calc(100vh-62px)] w-full">
+    <section class="h-[calc(100vh+62px)] w-full">
       <CredentialView :credential="credential" />
     </section>
   </div>
