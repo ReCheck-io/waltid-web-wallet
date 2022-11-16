@@ -10,9 +10,6 @@
         </nuxt-link>
       </div>
       <div class="flex items-center space-x-6">
-        <nuxt-link to="/settings" class="nav-link space-x-2">
-          <svg-icon name="settings" class="!w-5 !h-5" />
-        </nuxt-link>
         <button
           type="button"
           @click="signout"

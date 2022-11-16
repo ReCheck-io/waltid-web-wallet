@@ -18,7 +18,7 @@
     <td class="py-4 px-6">
       {{ tableData.validFrom || 'N/A' }}
     </td>
-    <td class="py-4 px-6">{{ tableData.issuedOn || 'N/A' }}</td>
+    <td class="py-4 px-6">{{ tableData.issuanceDate || 'N/A' }}</td>
     <td class="py-4 px-6">
       <Pill :variant="tableData.status">{{ tableData.status }}</Pill>
     </td>
@@ -68,7 +68,8 @@ export default {
   },
 
   mounted() {
-    const { credentialSubject, type } = this.data
+    const { credentialSubject, validFrom, issued, issuanceDate, type } =
+      this.data
     const credentialType = type[type.length - 1]
 
     switch (credentialType) {
@@ -80,13 +81,11 @@ export default {
             ? this.data?.issuerName
             : this.data?.issuer,
           status: 'verified',
-          issuedOn: moment(credentialSubject.issuanceDate).format(
-            'MMM Do YYYY',
-          ),
+          issuanceDate: moment(issuanceDate).format('MMM Do YYYY'),
           expirationDate: credentialSubject.expirationDate
             ? moment(credentialSubject.expirationDate).format('MMM Do YYYY')
             : 'Never',
-          validFrom: moment(credentialSubject.validFrom).format('MMM Do YYYY'),
+          validFrom: moment(validFrom).format('MMM Do YYYY'),
         }
         break
       case 'VerifiableDiploma':

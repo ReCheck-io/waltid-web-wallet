@@ -41,10 +41,10 @@
         </li>
         <li class="p-4 flex items-center justify-between odd:bg-white">
           <span class="font-medium text-gray-base select-none">
-            Issure Date
+            Issued Date
           </span>
           <span class="font-medium text-gray-dark select-none">
-            {{ credentialData.issuedOn }}
+            {{ credentialData.issuanceDate }}
           </span>
         </li>
       </ol>
@@ -164,7 +164,7 @@ export default {
       // level: 'M',
     })
 
-    const { credentialSubject, type } = this.credential
+    const { credentialSubject, validFrom, issuanceDate, type } = this.credential
     const credentialType = type[type.length - 1]
 
     switch (credentialType) {
@@ -178,13 +178,11 @@ export default {
             ? this.credential?.issuerName
             : this.credential?.issuer,
           status: 'verified',
-          issuedOn: moment(credentialSubject.issuanceDate).format(
-            'MMM Do YYYY',
-          ),
+          issuanceDate: moment(issuanceDate).format('MMM Do YYYY'),
           expirationDate: credentialSubject.expirationDate
             ? moment(credentialSubject.expirationDate).format('MMM Do YYYY')
             : 'Never',
-          validFrom: moment(credentialSubject.validFrom).format('MMM Do YYYY'),
+          validFrom: moment(validFrom).format('MMM Do YYYY'),
         }
         break
       case 'VerifiableDiploma':

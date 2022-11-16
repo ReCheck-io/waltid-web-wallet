@@ -30,7 +30,7 @@
               Expiration Date
             </th>
             <th scope="col" class="py-7 px-6 text-sm font-medium">
-              Issure Date
+              Issued Date
             </th>
             <th scope="col" class="py-7 px-6 text-sm font-medium">
               Date added
