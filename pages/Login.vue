@@ -12,14 +12,14 @@
           </p>
         </div>
 
-        <BaseButton variant="clear" @click="web3modal">
+        <!-- <BaseButton variant="clear" @click="web3modal">
           {{ $t('LOGIN.LOG_IN_WITH_WALLET') }}
         </BaseButton>
 
         <div
           class="my-6 h-3 border-b-[1px] border-gray-light text-base text-center">
           <span class="bg-white font-medium text-gray-base px-3">or</span>
-        </div>
+        </div> -->
 
         <form @submit="login" class="flex flex-col gap-6">
           <BaseInput
